@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"><plist version='1.0'>
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>bundleUUID</key>
+	<string>4676FC6D-6227-11D9-BFB1-000D93589AF6</string>
+	<key>command</key>
+	<string>#!/usr/bin/env ruby
+
+class InsertTagUsingCss
+  TOKENS = /\.|#/
+  
+  def initialize
+    @attrs = { :class =&gt; [], :id =&gt; [] }
+  end
+  
+  def execute
+    get_unparsed_tag(STDIN.read)
+    parse_tag
+    print insert_into_line
+  end
+
+  def get_unparsed_tag(s)
+    @raw  = s.rstrip
+    @line = s.strip.reverse[/^(.*?)(\s|$)/, 1].reverse
+  end
+
+  def parse_tag
+    return if @line.empty?
+    @tag = @line[/^(.*?)(#{TOKENS}|$)/, 1]
+    unparsed_attrs = @line[@tag.length, @line.length]
+
+    return if unparsed_attrs.empty?
+
+    # valid types are :class and :id
+    type, name = :class, &apos;&apos;
+    unparsed_attrs.scan(/./).each_with_index do |char, i|
+      eol = (i == unparsed_attrs.length - 1)
+      if char.match(TOKENS) or eol
+        name += char if eol
+
+        @attrs[type] &lt;&lt; name unless name.empty?
+
+        type = char.match(/\./) ? :class : :id unless eol
+        name = &apos;&apos;
+      else
+        name += char
+      end
+    end
+  end
+  
+  def insert_into_line
+    line_stub + generate_tag
+  end
+  
+  def line_stub
+    tag_start = @raw.length - @line.length - 1
+    tag_start == -1 ? &apos;&apos; : @raw[0..tag_start]
+  end
+
+  def generate_tag
+    %Q{&lt;#{@tag} #{id_attr} #{class_attr}&gt;&lt;/#{@tag}&gt;}.gsub(/(\s)\s/, &apos;\1&apos;).gsub(/\s(&gt;)/, &apos;\1&apos;)
+  end
+
+  def id_attr
+    %Q{id=&quot;#{@attrs[:id].join(&apos;-&apos;)}&quot;} unless @attrs[:id].nil? or @attrs[:id].empty?
+  end
+
+  def class_attr
+    %Q{class=&quot;#{@attrs[:class].join(&apos; &apos;)}&quot;} unless @attrs[:class].nil? or @attrs[:class].empty?
+  end
+end
+
+InsertTagUsingCss.new.execute</string>
+	<key>fallbackInput</key>
+	<string>line</string>
+	<key>input</key>
+	<string>selection</string>
+	<key>keyEquivalent</key>
+	<string>^$
+</string>
+	<key>name</key>
+	<string>Insert Tag Using CSS with Current Word</string>
+	<key>output</key>
+	<string>insertAsSnippet</string>
+	<key>scope</key>
+	<string>text.html</string>
+	<key>uuid</key>
+	<string>25ABC6D6-928A-4979-A30F-CEE0D42776EF</string>
+</dict>
+</plist>

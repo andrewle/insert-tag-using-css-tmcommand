@@ -1,0 +1,42 @@
+div
+div.blue
+div.blue.red.green
+div#header#main
+div#header.container.top
+div#content.column
+div#content.column.span-1
+div#content.span-2
+div#span-3
+	div.blue
+	div.blue.red.green
+	div#header
+	div#header.container.top
+	div#content.column
+	div#content.column.span-1
+	div#content.span-2
+	div#span-3
+									div.blue
+									div.blue.red.green
+									div#header
+									div#header.container.top
+									div#content.column
+									div#content.column.span-1
+									div#content.span-2
+									div#span-3
+<img src="path/to/image" height="height" width="width" alt="alt text" />  div.blue
+<img src="path/to/image" height="height" width="width" alt="alt text" />  div.blue.red.green
+<img src="path/to/image" height="height" width="width" alt="alt text" />  div#header
+<img src="path/to/image" height="height" width="width" alt="alt text" />  div#header.container.top
+<img src="path/to/image" height="height" width="width" alt="alt text" />  div#content.column
+<img src="path/to/image" height="height" width="width" alt="alt text" />  div#content.column.span-1
+<img src="path/to/image" height="height" width="width" alt="alt text" />  div#content.span-2
+<img src="path/to/image" height="height" width="width" alt="alt text" />  div#span-3
+ div
+ div.blue
+ div.blue.red.green
+ div#header#main
+ div#header.container.top
+ div#content.column
+ div#content.column.span-1
+ div#content.span-2
+ div#span-3
