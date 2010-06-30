@@ -8,20 +8,20 @@ class InsertTagUsingCss
   end
   
   def execute
-    get_unparsed_tag(STDIN.read)
+    init_unparsed_tag(STDIN.read)
     parse_tag
-    print insert_into_line
+    print insert_processed_tag
   end
 
-  def get_unparsed_tag(s)
+  def init_unparsed_tag(s)
     @raw  = s.rstrip
-    @line = s.strip.reverse[/^(.*?)(\s|$)/, 1].reverse
+    @unparsed_tag = s.strip.reverse[/^(.*?)(\s|$)/, 1].reverse
   end
 
   def parse_tag
-    return if @line.empty?
-    @tag = @line[/^(.*?)(#{TOKENS}|$)/, 1]
-    unparsed_attrs = @line[@tag.length, @line.length]
+    return if @unparsed_tag.empty?
+    @tag = @unparsed_tag[/^(.*?)(#{TOKENS}|$)/, 1]
+    unparsed_attrs = @unparsed_tag[@tag.length, @unparsed_tag.length]
 
     return if unparsed_attrs.empty?
 
@@ -42,12 +42,12 @@ class InsertTagUsingCss
     end
   end
   
-  def insert_into_line
+  def insert_processed_tag
     line_stub + generate_tag
   end
   
   def line_stub
-    tag_start = @raw.length - @line.length - 1
+    tag_start = @raw.length - @unparsed_tag.length - 1
     tag_start == -1 ? '' : @raw[0..tag_start]
   end
 
