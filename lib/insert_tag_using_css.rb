@@ -59,7 +59,7 @@ class InsertTagUsingCss
           else
             %Q{<#{@tag} #{id_attr} #{class_attr}></#{@tag}>}
           end
-    out.gsub(/(\s)\s/, '\1').gsub(/\s(>)/, '\1')
+    out.gsub(/(\s)\s*/, '\1').gsub(/\s+(>)/, '\1')
   end
 
   def id_attr
