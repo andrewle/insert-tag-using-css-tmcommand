@@ -40,3 +40,12 @@ div#span-3
  div#content.column.span-1
  div#content.span-2
  div#span-3
+img
+img.blue
+img.blue.red.green
+img#header#main
+img#header.container.top
+img#content.column
+img#content.column.span-1
+img#content.span-2
+img#span-3
