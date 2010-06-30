@@ -4,7 +4,7 @@ desc "Pull the ruby file in lib/ into the tmCommand file"
 task :build do
   require 'rexml/document'
   include REXML
-  file = "HTML.tmbundle/Commands/Insert Tag Using CSS Selectors with Current Word.tmCommand"
+  file = "Insert Tag Using CSS Selectors with Current Word.tmCommand"
   xml = Document.new(File.open(file))
   
   contents = IO.read('lib/insert_tag_using_css.rb')
