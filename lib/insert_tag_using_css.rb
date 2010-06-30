@@ -2,6 +2,7 @@
 
 class InsertTagUsingCss
   TOKENS = /\.|#/
+  SINGLE_TAG = /^(?:img|meta|link|input|base|area|col|frame|param|br|hr)$/i
   
   def initialize
     @attrs = { :class => [], :id => [] }
@@ -52,7 +53,13 @@ class InsertTagUsingCss
   end
 
   def generate_tag
-    %Q{<#{@tag} #{id_attr} #{class_attr}></#{@tag}>}.gsub(/(\s)\s/, '\1').gsub(/\s(>)/, '\1')
+    out = case @tag
+          when SINGLE_TAG
+            %Q{<#{@tag} #{id_attr} #{class_attr} />}
+          else
+            %Q{<#{@tag} #{id_attr} #{class_attr}></#{@tag}>}
+          end
+    out.gsub(/(\s)\s/, '\1').gsub(/\s(>)/, '\1')
   end
 
   def id_attr
