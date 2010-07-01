@@ -9,11 +9,12 @@
 	<string>#!/usr/bin/env ruby
 
 class InsertTagUsingCss
-  TOKENS = /\.|#/
+  TOKENS = /\.|#|\[|\]|=/
   SINGLE_TAG = /^(?:img|meta|link|input|base|area|col|frame|param|br|hr)$/i
   
   def initialize
-    @attrs = { :class =&gt; [], :id =&gt; [] }
+    @attrs = { :class =&gt; [], :id =&gt; [], :named =&gt; {} }
+    @current_named_attr = false
   end
   
   def execute
@@ -31,23 +32,51 @@ class InsertTagUsingCss
     return if @unparsed_tag.empty?
     @tag = @unparsed_tag[/^(.*?)(#{TOKENS}|$)/, 1]
     unparsed_attrs = @unparsed_tag[@tag.length, @unparsed_tag.length]
-
     return if unparsed_attrs.empty?
 
     # valid types are :class and :id
     type, name = :class, &apos;&apos;
     unparsed_attrs.scan(/./).each_with_index do |char, i|
       eol = (i == unparsed_attrs.length - 1)
-      if char.match(TOKENS) or eol
-        name += char if eol
-
-        @attrs[type] &lt;&lt; name unless name.empty?
-
-        type = char.match(/\./) ? :class : :id unless eol
+      if char.match(TOKENS)
+        update_attrs(type, name)
         name = &apos;&apos;
+        
+        type = case char
+               when /\./
+                 :class
+               when /#/
+                 :id
+               when /\[/
+                 :named
+               when /\]/
+                 false
+               when /\=/
+                 type == :named ? :named_value : false
+               end
+        next
       else
         name += char
+        update_attrs(type, name) if eol
       end
+    end
+  end
+  
+  def update_attrs(type, value)
+    return if value.empty?
+    case type
+    when :class
+      @attrs[:class] &lt;&lt; value
+    when :id
+      @attrs[:id] &lt;&lt; value
+    when :named
+      @attrs[:named][value] = &quot;&quot;
+      @current_named_attr = value
+    when :named_value
+      return if !@current_named_attr or @current_named_attr.empty?
+      return if !@attrs[:named].has_key?(@current_named_attr)
+      @attrs[:named][@current_named_attr] = value
+      @current_named_attr = false
     end
   end
   
@@ -63,11 +92,16 @@ class InsertTagUsingCss
   def generate_tag
     out = case @tag
           when SINGLE_TAG
-            %Q{&lt;#{@tag} #{id_attr} #{class_attr} /&gt;}
+            %Q{&lt;#{@tag} #{named_attr} #{id_attr} #{class_attr} /&gt;}
           else
-            %Q{&lt;#{@tag} #{id_attr} #{class_attr}&gt;&lt;/#{@tag}&gt;}
+            %Q{&lt;#{@tag} #{named_attr} #{id_attr} #{class_attr}&gt;&lt;/#{@tag}&gt;}
           end
     out.gsub(/(\s)\s*/, &apos;\1&apos;).gsub(/\s+(&gt;)/, &apos;\1&apos;)
+  end
+  
+  def named_attr
+    return if @attrs[:named].empty?
+    @attrs[:named].map { |k, v| %Q{#{k}=&quot;#{v}&quot;} }.join(&apos; &apos;)
   end
 
   def id_attr
