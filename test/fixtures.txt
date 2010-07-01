@@ -49,3 +49,18 @@ img#content.column
 img#content.column.span-1
 img#content.span-2
 img#span-3
+img[src=/path/to/image]
+img[src=/path/to/image].green.border
+img[src=/path/to/image]#big_photo
+img[src=/path/to/image].green.border#billboard
+img[src=/path/to/image]#billboard.green.border#dynamic
+img[src=/path/to/image][alt=photo]
+img[src=/path/to/image].green.border[alt=photo]
+img[src=/path/to/image]#big_photo[alt=photo]
+img[src=/path/to/image].green.border#billboard[alt=photo]
+img[src=/path/to/image]#billboard.green.border#dynamic[alt=photo]
+img[src=/path/to/image][alt=stark industries]
+img[src=/path/to/image].green.border[alt=stark industries]
+img[src=/path/to/image]#big_photo[alt=stark industries]
+img[src=/path/to/image].green.border#billboard[alt=stark industries]
+img[src=/path/to/image]#billboard.green.border#dynamic[alt=stark industries]
