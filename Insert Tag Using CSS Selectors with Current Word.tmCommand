@@ -17,10 +17,10 @@ class InsertTagUsingCss
     @current_named_attr = false
   end
   
-  def execute
-    init_unparsed_tag(STDIN.read)
+  def execute(line)
+    init_unparsed_tag(line)
     parse_tag
-    print insert_processed_tag
+    insert_processed_tag
   end
 
   def init_unparsed_tag(s)
@@ -94,7 +94,7 @@ class InsertTagUsingCss
           when SINGLE_TAG
             %Q{&lt;#{@tag} #{named_attr} #{id_attr} #{class_attr} /&gt;}
           else
-            %Q{&lt;#{@tag} #{named_attr} #{id_attr} #{class_attr}&gt;&lt;/#{@tag}&gt;}
+            %Q{&lt;#{@tag} #{named_attr} #{id_attr} #{class_attr}&gt;$1&lt;/#{@tag}&gt;}
           end
     out.gsub(/(\s)\s*/, &apos;\1&apos;).gsub(/\s+(&gt;)/, &apos;\1&apos;)
   end
@@ -113,7 +113,7 @@ class InsertTagUsingCss
   end
 end
 
-InsertTagUsingCss.new.execute</string>
+print InsertTagUsingCss.new.execute(STDIN.read)</string>
 	<key>fallbackInput</key>
 	<string>line</string>
 	<key>input</key>
