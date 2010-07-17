@@ -12,7 +12,7 @@ class InsertTagUsingCss
   def execute
     init_unparsed_tag(STDIN.read)
     parse_tag
-    print insert_processed_tag
+    insert_processed_tag
   end
 
   def init_unparsed_tag(s)
@@ -105,4 +105,4 @@ class InsertTagUsingCss
   end
 end
 
-InsertTagUsingCss.new.execute
+print InsertTagUsingCss.new.execute
