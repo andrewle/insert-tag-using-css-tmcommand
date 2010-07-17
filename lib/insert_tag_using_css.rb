@@ -9,8 +9,8 @@ class InsertTagUsingCss
     @current_named_attr = false
   end
   
-  def execute
-    init_unparsed_tag(STDIN.read)
+  def execute(line)
+    init_unparsed_tag(line)
     parse_tag
     insert_processed_tag
   end
@@ -105,4 +105,4 @@ class InsertTagUsingCss
   end
 end
 
-print InsertTagUsingCss.new.execute
+print InsertTagUsingCss.new.execute(STDIN.read)
