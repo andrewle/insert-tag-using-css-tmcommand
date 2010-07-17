@@ -86,7 +86,7 @@ class InsertTagUsingCss
           when SINGLE_TAG
             %Q{<#{@tag} #{named_attr} #{id_attr} #{class_attr} />}
           else
-            %Q{<#{@tag} #{named_attr} #{id_attr} #{class_attr}></#{@tag}>}
+            %Q{<#{@tag} #{named_attr} #{id_attr} #{class_attr}>$1</#{@tag}>}
           end
     out.gsub(/(\s)\s*/, '\1').gsub(/\s+(>)/, '\1')
   end
